@@ -1,6 +1,6 @@
 # breakup.js
 
-v0.1.0
+v0.1.1
 
 Copyright 2013 Nic Jansma
 http://nicj.net
@@ -32,6 +32,13 @@ as `process.nextTick()` in Node.js and `setImmediate()` in modern browsers), and
 will fallback to a `setTimeout(..., 4)` in older browsers.  This yield will allow
 the environment to do any UI and other processing work it wants to do.  In browsers,
 this will help reduce the chance of a Long Running Script dialog.
+
+`breakup.js` is primarily meant to be used in a browser environment, as Node.js code is
+already asynchronously driven. You won't see a Long Running Script dialog in Node.js. However,
+you're welcome to use the breakup Node.js module if you want have more control over how much 
+time your enumerations take.  For example, if you have thousands of items to enumerate
+and you want to process them lazily, you could set the threshold to 100ms with a 10000ms
+wait time and specify the `forceYield` parameter, so other work is prioritized.
 
 Changing `async.forEachSeries()` to `breakup.forEachSeries()` is as simple as
 changing the module name.  You may add two additional parameters to fine-tune
@@ -158,7 +165,7 @@ doIteration(function(b) {
 ## Documentation
 
 <a name="forEachSeries" />
-### forEachSeries(arr, iterator, callback, workTime, yieldTime)
+### forEachSeries(arr, iterator, callback, workTime, yieldTime, forceYield)
 
 This function should be a drop-in replacement for `async.forEachSeries()`.
 
@@ -180,6 +187,7 @@ __Arguments__
     to [`breakup.DEFAULT_WORK_TIME`](#DEFAULT_WORK_TIME))
 * yieldTime - Time (in milliseconds) to delay during yielding, if setImmediate is
     not available (optional, defaults to [`breakup.DEFAULT_YIELD_TIME`](#DEFAULT_YIELD_TIME))
+* forceYield - Force yielding for the specified milliseconds instead of setImmedia/nextTick (optional)
 
 __Example__
 
@@ -199,8 +207,11 @@ breakup.forEachSeries(
 );
 ```
 
+If `yieldTime` is specified in a Node.js environment, that time will be used instead of
+`process.nextTick()`.
+
 <a name="each" />
-### each(arr, iterator, callback, workTime, yieldTime)
+### each(arr, iterator, callback, workTime, yieldTime, forceYield)
 
 This function is meant to be a replacement for `jQuery.each()` or `jQuery(selector).each()`.
 
@@ -223,6 +234,11 @@ __Arguments__
   with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
+* workTime - Work for this many milliseconds before yielding (optional, defaults
+    to [`breakup.DEFAULT_WORK_TIME`](#DEFAULT_WORK_TIME))
+* yieldTime - Time (in milliseconds) to delay during yielding, if setImmediate is
+    not available (optional, defaults to [`breakup.DEFAULT_YIELD_TIME`](#DEFAULT_YIELD_TIME))
+* forceYield - Force yielding for the specified milliseconds instead of setImmedia/nextTick (optional)
 
 __Example__
 
@@ -290,6 +306,7 @@ breakup object.
 ## Version History
 
 * v0.1.0 - 2013-02-11 Initial version
+* v0.1.1 - 2013-02-11 Added `forceYield` parameter
 
 ## Thanks
 

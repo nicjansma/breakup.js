@@ -3,7 +3,7 @@
     "description": "Yielding enumeration replacement functions for async.forEachSeries() and jQuery.each()",
     "main": "./lib/breakup",
     "author": "Nic Jansma",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "repository" : {
         "type" : "git",
         "url" : "http://github.com/nicjansma/breakup.js.git"
