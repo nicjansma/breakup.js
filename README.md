@@ -16,7 +16,7 @@ too long. In some browsers, enumerating over a large number of elements (or
 doing a lot of work on each element) may cause the browser to become unresponsive,
 and possibly prompt the user to stop running the script.
 
-`breakup.js` helps solve this problem by breaking up the enumeration into
+breakup.js helps solve this problem by breaking up the enumeration into
 time-based chunks, and yielding to the environment if a threshold of time
 has passed before continuing.  This will help avoid a Long Running Script
 dialog in browsers as they are given a chance to update their UI.  It is meant
@@ -24,7 +24,7 @@ to be a simple, drop-in replacement for `async.forEachSeries()`.  It also provid
 `breakup.each()` as a replacement for `jQuery.each()` (though the developer may
 have to modify code-flow to deal with the asynchronous nature of breakup.js).
 
-`breakup.js` does this by keeping track of how much time the enumeration has taken
+breakup.js does this by keeping track of how much time the enumeration has taken
 after processing each item.  If the enumeration time has passed a threshold (the
 default is 50ms, but this can be customized), the enumeration will yield before
 resuming.  Yielding can be done immediately in environments that support it (such
@@ -33,7 +33,7 @@ will fallback to a `setTimeout(..., 4)` in older browsers.  This yield will allo
 the environment to do any UI and other processing work it wants to do.  In browsers,
 this will help reduce the chance of a Long Running Script dialog.
 
-`breakup.js` is primarily meant to be used in a browser environment, as Node.js code is
+breakup.js is primarily meant to be used in a browser environment, as Node.js code is
 already asynchronously driven. You won't see a Long Running Script dialog in Node.js. However,
 you're welcome to use the breakup Node.js module if you want have more control over how much 
 time your enumerations take.  For example, if you have thousands of items to enumerate
@@ -56,9 +56,11 @@ Alternatively, you can install using Node Package Manager (npm):
 
     npm install breakup
 
-__Development:__ [breakup.js](https://github.com/nicjansma/breakup.js/raw/master/lib/breakup.js) - 8.1kb
+__Development:__ [breakup.js](https://github.com/nicjansma/breakup.js/raw/master/lib/breakup.js)
+    - 8.1kb
 
-__Production:__ [breakup.min.js](https://github.com/nicjansma/breakup.js/raw/master/dist/breakup.min.js) - 1.5kb (minified)
+__Production:__ [breakup.min.js](https://github.com/nicjansma/breakup.js/raw/master/dist/breakup.min.js)
+    - 829b (minified / gzipped)
 
 ## Node.js / async.js
 
@@ -112,11 +114,11 @@ flow control.
 In addition, this type of change may require you to change any code calling
 the function that the original `jQuery.each()` call was in if it returned a value
 that depended on that work, as the new `breakup.each()`'s callback-complete function is
-what will drive the new code flow.  If you need the return value of a function called
+what will drive the new code flow.  If you need the return value of a function that is calling
 `jQuery.each()` you will have to have `breakup.each()`'s callback-complete fire a
 new callback with the return values instead of simply returning it in the original function call.
 
-For example, you may be using `jQuery.each()` like this:
+An example may help illustrate this better. You may be using `jQuery.each()` like this:
 
 ```js
 function doIteration() {
@@ -176,18 +178,18 @@ callback for the forEachSeries function is immediately called with the error.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err) which must be called once it has completed.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A function to apply to each item in the array.
+  The iterator is passed a `callback(err)` which must be called once it has completed.
   If no error has occurred, the callback should be run without arguments or
   with an explicit null argument.
-* callback(err) - A callback which is called after all the iterator functions
+* `callback(err)` - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
-* workTime - Work for this many milliseconds before yielding (optional, defaults
-    to [`breakup.DEFAULT_WORK_TIME`](#DEFAULT_WORK_TIME))
-* yieldTime - Time (in milliseconds) to delay during yielding, if setImmediate is
-    not available (optional, defaults to [`breakup.DEFAULT_YIELD_TIME`](#DEFAULT_YIELD_TIME))
-* forceYield - Force yielding for the specified milliseconds instead of setImmedia/nextTick (optional)
+* `workTime` - Work for this many milliseconds before yielding (optional, defaults
+    to [`breakup.DEFAULT_WORK_TIME`](#DEFAULT_WORK_TIME)).
+* `yieldTime` - Time (in milliseconds) to delay during yielding, if setImmediate is
+    not available (optional, defaults to [`breakup.DEFAULT_YIELD_TIME`](#DEFAULT_YIELD_TIME)).
+* `forceYield` - Force yielding for the specified milliseconds instead of setImmediate/nextTick (optional).
 
 __Example__
 
@@ -207,8 +209,8 @@ breakup.forEachSeries(
 );
 ```
 
-If `yieldTime` is specified in a Node.js environment, that time will be used instead of
-`process.nextTick()`.
+You may set the `yieldTime` and `forceYield` parameters in a Node.js environment to force a yield of the
+specified time instead of using Node's `process.nextTick()`.
 
 <a name="each" />
 ### each(arr, iterator, callback, workTime, yieldTime, forceYield)
@@ -227,18 +229,18 @@ callback for the each function is immediately called with the error.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(index, item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err) which must be called once it has completed.
+* `arr` - An array to iterate over.
+* `iterator(index, item, callback)` - A function to apply to each item in the array.
+  The iterator is passed a `callback(err)` which must be called once it has completed.
   If no error has occured, the callback should be run without arguments or
   with an explicit null argument.
-* callback(err) - A callback which is called after all the iterator functions
+* `callback(err)` - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
-* workTime - Work for this many milliseconds before yielding (optional, defaults
-    to [`breakup.DEFAULT_WORK_TIME`](#DEFAULT_WORK_TIME))
-* yieldTime - Time (in milliseconds) to delay during yielding, if setImmediate is
-    not available (optional, defaults to [`breakup.DEFAULT_YIELD_TIME`](#DEFAULT_YIELD_TIME))
-* forceYield - Force yielding for the specified milliseconds instead of setImmedia/nextTick (optional)
+* `workTime` - Work for this many milliseconds before yielding (optional, defaults
+    to [`breakup.DEFAULT_WORK_TIME`](#DEFAULT_WORK_TIME)).
+* `yieldTime` - Time (in milliseconds) to delay during yielding, if setImmediate is
+    not available (optional, defaults to [`breakup.DEFAULT_YIELD_TIME`](#DEFAULT_YIELD_TIME)).
+* `forceYield` - Force yielding for the specified milliseconds instead of setImmediate/nextTick (optional).
 
 __Example__
 
@@ -269,7 +271,7 @@ $([1,2,3]).breakup(
 is the iterator signature: `forEachSeries()` iterates with `function(item, callback)` and
 requires the callback to indicate work is done.  This matches the `async.forEachSeries()`
 signature.  On the other hand, `each()` matches the jQuery signature by using the iterator
-`function(index, item)`, and waiting on the return of the function to move to the next
+`function(index, item, callback)`, and waiting on the return of the function to move to the next
 item. If you need to switch from `jQuery.each()` to `breakup.forEachSeries()`, you will need
 to change the signature, and thus your code flow, to handle the callback instead of the function return.
 
