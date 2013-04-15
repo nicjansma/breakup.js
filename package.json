@@ -22,13 +22,5 @@
         "uglify-js": "1.2.x",
         "jshint": ">0.0.0",
         "jquery": ">0.0.0"
-    },
-    "jam": {
-        "main": "lib/breakup.js",
-        "include": [
-            "lib/breakup.js",
-            "README.md",
-            "LICENSE"
-        ]
     }
 }

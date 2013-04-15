@@ -9,8 +9,8 @@ Licensed under the MIT license
 
 ## Introduction
 
-Serially enumerating over a collection (such as using `async.forEachSeries()`
-in Node.js or `jQuery.each()` in the browser) can lead to performance and
+Serially enumerating over a collection (such as using [async.js](https://github.com/caolan/async)'s 
+`async.forEachSeries()` in Node.js or jQuery's `$.each()` in the browser) can lead to performance and
 responsiveness issues if processing or looping through the collection takes
 too long. In some browsers, enumerating over a large number of elements (or
 doing a lot of work on each element) may cause the browser to become unresponsive,
@@ -52,15 +52,16 @@ to fire.  See the [`breakup.each()`](#each) for details.
 
 Releases are available for download from [GitHub](https://github.com/nicjansma/breakup.js).
 
-Alternatively, you can install using Node Package Manager (npm):
-
-    npm install breakup
-
 __Development:__ [breakup.js](https://github.com/nicjansma/breakup.js/raw/master/lib/breakup.js)
     - 8.1kb
 
 __Production:__ [breakup.min.js](https://github.com/nicjansma/breakup.js/raw/master/dist/breakup.min.js)
     - 829b (minified / gzipped)
+
+breakup.js is also available as the [npm breakup module](https://npmjs.org/package/breakup). You can install using 
+Node Package Manager (npm):
+
+    npm install breakup
 
 ## Node.js / async.js
 
