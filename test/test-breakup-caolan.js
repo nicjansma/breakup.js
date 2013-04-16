@@ -2,6 +2,8 @@
 // Replicates all of the forEachSeries() tests of caolan's async Node.js module
 //
 (function(exports) {
+    'use strict';
+
     var breakup = require('../lib/breakup');
 
     //
@@ -28,44 +30,46 @@
     exports['caolan-async']['forEachSeries()'] = function(test){
         var args = [];
 
-        test.expect(1);
+        test.expect(2);
 
         breakup.forEachSeries([1,3,2], forEachIterator.bind(this, args), function(err){
             test.same(args, [1,3,2], 'final array');
+            test.equal(null, err);
             test.done();
         });
     };
 
-    exports['caolan-async']['forEachSeries() - empty array'] = function(test){
-        test.expect(1);
+    exports['caolan-async']['forEachSeries() - empty array'] = function(test) {
+        test.expect(2);
 
-        breakup.forEachSeries([], function(x, callback){
+        breakup.forEachSeries([], function(x, callback) {
             test.ok(false, 'iterator should not be called');
             callback();
-        }, function(err){
+        }, function(err) {
+            test.equal(null, err);
             test.ok(true, 'should call callback');
         });
 
         setTimeout(test.done, 25);
     };
 
-    exports['caolan-async']['forEachSeries() - error'] = function(test){
+    exports['caolan-async']['forEachSeries() - error'] = function(test) {
         test.expect(2);
 
-        var call_order = [];
+        var callOrder = [];
 
-        breakup.forEachSeries([1,3,2], function(x, callback){
-            call_order.push(x);
+        breakup.forEachSeries([1,3,2], function(x, callback) {
+            callOrder.push(x);
             callback('error');
-        }, function(err){
-            test.same(call_order, [1]);
+        }, function(err) {
+            test.same(callOrder, [1]);
             test.equals(err, 'error');
         });
 
         setTimeout(test.done, 50);
     };
 
-    exports['caolan-async']['forEachSeries() - no callback'] = function(test){
+    exports['caolan-async']['forEachSeries() - no callback'] = function(test) {
         breakup.forEachSeries([1], forEachNoCallbackIterator.bind(this, test));
     };
 })(exports);
