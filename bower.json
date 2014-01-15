@@ -1,0 +1,27 @@
+{
+  "name": "breakup.js",
+  "version": "0.1.1",
+  "homepage": "https://github.com/nicjansma/breakup.js",
+  "authors": [
+    "Nic Jansma <nic@nicj.net>"
+  ],
+  "description": "Yielding enumeration replacement functions for async.forEachSeries() and jQuery.each()",
+  "main": "dist/breakup.min.js",
+  "keywords": [
+    "breakup",
+    "enumeration",
+    "async",
+    "each",
+    "enumerate"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "Gruntfile.js",
+    "deps",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test"
+  ]
+}

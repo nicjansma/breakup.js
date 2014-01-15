@@ -63,6 +63,10 @@ Node Package Manager (npm):
 
     npm install breakup
 
+breakup.js is also available via [bower](http://bower.io/). You can install using:
+
+    bower install breakup.js
+
 ## Node.js / async.js
 
 breakup.js can be used as a drop-in replacement for the `async.forEachSeries()` function in the
