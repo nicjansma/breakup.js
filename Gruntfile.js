@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             }
         },
         nodeunit: {
-            all: ['test/*.js']
+            all: ['test/test-breakup.js', 'test/test-breakup-caolan.js']
         }
     });
 
