@@ -1,8 +1,8 @@
 # breakup.js
 
-v0.1.1
+v0.1.2
 
-Copyright 2013 Nic Jansma
+Copyright 2015 Nic Jansma
 http://nicj.net
 
 Licensed under the MIT license
@@ -311,10 +311,23 @@ You may overwrite this value to change the global default.
 Changes the value of breakup back to its original value, returning a reference to the
 breakup object.
 
+## Tests
+
+Tests are located under the `test/` directory.
+
+You can run them in three ways:
+
+1. Via `test/index.html` in your browser
+2. Via `grunt mochaTest`, which runs the tests using Mocha in the NodeJS console
+3. Via `grunt karma`, which runs the tests using Mocha/Karma in a headless PhantomJS instance
+
+`grunt test` runs #2 and #3.
+
 ## Version History
 
 * v0.1.0 - 2013-02-11 Initial version
 * v0.1.1 - 2013-02-11 Added `forceYield` parameter
+* v0.1.2 - 2015-02-08 Added `forceYield` parameter
 
 ## Thanks
 
