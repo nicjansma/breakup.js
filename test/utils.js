@@ -2,7 +2,7 @@
 // Function.bind shim (via caolan-async)
 //
 (function() {
-    'use strict';
+    "use strict";
 
     if (!Function.prototype.bind) {
         Function.prototype.bind = function (thisArg) {

@@ -1,14 +1,29 @@
 //
 // Tests yielding functionality of breakup.forEachSeries and breakup.each
 //
-(function(exports) {
-    'use strict';
-
-    var breakup = require('../lib/breakup');
+(function(root) {
+    "use strict";
 
     //
-    // iterator helpers
+    // Run in either Mocha, Karma or Browser environments
     //
+    if (typeof root === "undefined") {
+        root = {};
+    }
+
+    var breakup = root.breakup ? root.breakup : require("../lib/breakup");
+    var expect = root.expect ? root.expect : require("expect.js");
+
+    //
+    // Iterator helpers
+    //
+    /**
+     * Iterator for forEachSeries that waits 10ms between iteration
+     *
+     * @param {Array} args Result array
+     * @param {object} x Item
+     * @param {function} callback Callback
+     */
     function forEachWaitLongTimeIterator(args, x, callback) {
         setTimeout(function() {
             args.push(x);
@@ -16,13 +31,25 @@
         }, 10);
     }
 
-    function eachIterator(test, args, index, x) {
-        test.equal(index, x - 1, 'proper index for item');
+    /**
+     * Iterator that goes over each item, validating each iteration
+     * @param {Array} args Result array
+     * @param {number} index Item index
+     * @param {object} x Item
+     */
+    function eachIterator(args, index, x) {
+        expect(index).to.be.eql(x - 1);
         args.push(x);
     }
 
-    function eachWaitLongTimeIterator(test, args, index, x) {
-        test.equal(index, x - 1, 'proper index for item');
+    /**
+     * Iterator that goes over each item, waiting 10ms for each iteration
+     * @param {Array} args Result array
+     * @param {number} index Item index
+     * @param {object} x Item
+     */
+    function eachWaitLongTimeIterator(args, index, x) {
+        expect(index).to.be.eql(x - 1);
 
         // busy wait
         var startTime = +(new Date());
@@ -35,50 +62,73 @@
     }
 
     //
-    // test group
+    // Constants
     //
-    exports.breakup = {};
+    var SIMPLE_ARRAY = [1, 2, 3];
 
-    // specify
-    exports.breakup['forEachSeries() - hits threshold'] = function(test) {
-        var args = [];
+    //
+    // Tests
+    //
+    describe("breakup.js tests", function() {
+        describe("forEachSeries()", function() {
+            it("should be a function", function() {
+                expect(breakup.forEachSeries).to.be.a("function");
+            });
+            
+            it("should yield when workTime = 0 and we have work that takes at least 10ms", function(done) {
+                var args = [];
 
-        breakup.forEachSeries([1,2,3], forEachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
-            test.same(args, [1,2,3], 'final array');
-            test.ok(yielded, 'should have yielded');
-            test.done();
-        }, 0, 0);
-    };
+                breakup.forEachSeries(SIMPLE_ARRAY, forEachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
+                    expect(args).to.be.an("array");
+                    expect(args).to.eql(SIMPLE_ARRAY);
+                    expect(err).to.eql(null);
+                    expect(yielded).to.be.ok("should have yielded");
+                    done();
+                }, 0, 0);
+            });
 
-    exports.breakup['forEachSeries() - does not hit threshold'] = function(test) {
-        var args = [];
+            it("should not yield when workTime = 100000", function(done) {
+                var args = [];
 
-        // theoretically this shouldn't take 100 seconds
-        breakup.forEachSeries([1,2,3], forEachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
-            test.same(args, [1,2,3], 'final array');
-            test.ok(!yielded, 'should not have yielded');
-            test.done();
-        }, 100000, 0);
-    };
+                breakup.forEachSeries(SIMPLE_ARRAY, forEachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
+                    expect(args).to.be.an("array");
+                    expect(args).to.eql(SIMPLE_ARRAY);
+                    expect(err).to.eql(null);
+                    expect(yielded).to.not.be.ok("should not have yielded");
+                    done();
+                }, 100000, 0);
+            });
+        });
 
-    exports.breakup['each() - hits threshold'] = function(test) {
-        var args = [];
+        describe("each()", function() {
+            it("should be a function", function() {
+                expect(breakup.each).to.be.a("function");
+            });
+            
+            it("should yield when workTime = 1 and we have work that takes at least 10ms", function(done) {
+                var args = [];
 
-        breakup.each([1,2,3], eachWaitLongTimeIterator.bind(this, test, args), function(err, yielded) {
-            test.same(args, [1,2,3], 'final array');
-            test.ok(yielded, 'should have yielded');
-            test.done();
-        }, 1, 0);
-    };
+                breakup.each(SIMPLE_ARRAY, eachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
+                    expect(args).to.be.an("array");
+                    expect(args).to.eql(SIMPLE_ARRAY);
+                    expect(err).to.eql(null);
+                    expect(yielded).to.be.ok("should have yielded");
+                    done();
+                }, 1, 0);
+            });
 
-    exports.breakup['each() - does not hit threshold'] = function(test) {
-        var args = [];
+            it("should not yield when workTime = 100000", function(done) {
+                var args = [];
 
-        // theoretically this shouldn't take 100 seconds
-        breakup.each([1,2,3], eachIterator.bind(this, test, args), function(err, yielded) {
-            test.same(args, [1,2,3], 'final array');
-            test.ok(!yielded, 'should not have yielded');
-            test.done();
-        }, 100000, 0);
-    };
-})(exports);
+                breakup.each(SIMPLE_ARRAY, eachIterator.bind(this, args), function(err, yielded) {
+                    expect(args).to.be.an("array");
+                    expect(args).to.eql(SIMPLE_ARRAY);
+                    expect(err).to.eql(null);
+                    expect(yielded).to.not.be.ok("should not have yielded");
+                    done();
+                }, 100000, 0);
+            });
+        });
+    });
+
+})(typeof window !== "undefined" ? window : undefined);

@@ -1,2 +1,6 @@
 /node_modules
 npm-debug.log
+/eslint.xml
+/test/*.tap
+/test/coverage
+/test/vendor

@@ -1,22 +1,42 @@
 //
 // Tests jQuery $(selector).breakup() extension
 //
-(function(exports) {
-    'use strict';
-
-    var breakup = require('../lib/breakup');
-    var jQuery = require('jquery');
+(function(root) {
+    "use strict";
 
     //
-    // iterator helpers
+    // Run in either Mocha, Karma or Browser environments
     //
-    function eachIterator(test, args, index, x) {
-        test.equal(index, x - 1, 'proper index for item');
+    if (typeof root === "undefined") {
+        root = {};
+    }
+
+    var breakup = root.breakup ? root.breakup : require("../lib/breakup");
+    var expect = root.expect ? root.expect : require("expect.js");
+    var jQuery = root.jQuery ? root.jQuery : require("jquery");
+
+    //
+    // Iterator helpers
+    //
+    /**
+     * Iterator that goes over each item, validating each iteration
+     * @param {Array} args Result array
+     * @param {number} index Item index
+     * @param {object} x Item
+     */
+    function eachIterator(args, index, x) {
+        expect(index).to.be.eql(x - 1);
         args.push(x);
     }
 
-    function eachWaitLongTimeIterator(test, args, index, x) {
-        test.equal(index, x - 1, 'proper index for item');
+    /**
+     * Iterator that goes over each item, waiting 10ms for each iteration
+     * @param {Array} args Result array
+     * @param {number} index Item index
+     * @param {object} x Item
+     */
+    function eachWaitLongTimeIterator(args, index, x) {
+        expect(index).to.be.eql(x - 1);
 
         // busy wait
         var startTime = +(new Date());
@@ -29,33 +49,43 @@
     }
 
     //
-    // test group
+    // Constants
     //
-    exports['breakup - jQuery extensions'] = {};
+    var SIMPLE_ARRAY = [1, 2, 3];
 
-    exports['breakup - jQuery extensions - forEachSeries()'] = function(test) {
-        test.equal('function', typeof(breakup.forEachSeries));
-        test.done();
-    };
+    //
+    // Tests
+    //
+    describe("jQuery extensions", function() {
+        describe("$.breakup", function() {
+            it("should be a function", function() {
+                expect(jQuery([]).breakup).to.be.a("function");
+            });
+            
+            it("should yield when workTime = 1 and we have work that takes at least 10ms", function(done) {
+                var args = [];
 
-    exports['breakup - jQuery extensions']['$(selector).breakup() - hits threshold'] = function(test) {
-        var args = [];
+                jQuery(SIMPLE_ARRAY).breakup(eachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
+                    expect(args).to.be.an("array");
+                    expect(args).to.eql(SIMPLE_ARRAY);
+                    expect(err).to.eql(null);
+                    expect(yielded).to.be.ok("should have yielded");
+                    done();
+                }, 1, 0);
+            });
+            
+            it("should not yield when workTime = 100000", function(done) {
+                var args = [];
 
-        jQuery([1,2,3]).breakup(eachWaitLongTimeIterator.bind(this, test, args), function(err, yielded) {
-            test.same(args, [1,2,3], 'final array');
-            test.ok(yielded, 'should have yielded');
-            test.done();
-        }, 1, 0);
-    };
+                jQuery(SIMPLE_ARRAY).breakup(eachIterator.bind(this, args), function(err, yielded) {
+                    expect(args).to.be.an("array");
+                    expect(args).to.eql(SIMPLE_ARRAY);
+                    expect(err).to.eql(null);
+                    expect(yielded).to.not.be.ok("should not have yielded");
+                    done();
+                }, 100000, 0);
+            });
+        });
+    });
 
-    exports['breakup - jQuery extensions']['$(selector).breakup() - does not hit threshold'] = function(test) {
-        var args = [];
-
-        // theoretically this shouldn't take 100 seconds
-        jQuery([1,2,3]).breakup(eachIterator.bind(this, test, args), function(err, yielded) {
-            test.same(args, [1,2,3], 'final array');
-            test.ok(!yielded, 'should not have yielded');
-            test.done();
-        }, 100000, 0);
-    };
-})(exports);
+})(typeof window !== "undefined" ? window : undefined);
