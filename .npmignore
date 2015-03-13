@@ -1,6 +1,10 @@
-deps
-dist
-test
-.npmignore
+.bowerrc
+.eslintrc
 .gitmodules
-Makefile
+.npmignore
+.travis.yml
+Gruntfile.js
+bower.json
+dist
+karma.config.js
+test
