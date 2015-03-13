@@ -6,7 +6,7 @@
     "Nic Jansma <nic@nicj.net>"
   ],
   "description": "Yielding enumeration replacement functions for async.forEachSeries() and jQuery.each()",
-  "main": "dist/breakup.min.js",
+  "main": "lib/breakup.js",
   "keywords": [
     "breakup",
     "enumeration",
@@ -21,7 +21,6 @@
     "deps",
     "node_modules",
     "bower_components",
-    "lib",
     "test"
   ],
   "devDependencies": {
