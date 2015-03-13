@@ -1,3 +1,4 @@
+/*eslint-env node,mocha,browser*/
 //
 // Tests jQuery $(selector).breakup() extension
 //
@@ -11,7 +12,11 @@
         root = {};
     }
 
-    var breakup = root.breakup ? root.breakup : require("../lib/breakup");
+    if (!root.breakup) {
+        // ensure it 's loaded so we get the jQuery hooks'
+        root.breakup = require("../lib/breakup");
+    }
+
     var expect = root.expect ? root.expect : require("expect.js");
     var jQuery = root.jQuery ? root.jQuery : require("jquery");
 
@@ -61,7 +66,7 @@
             it("should be a function", function() {
                 expect(jQuery([]).breakup).to.be.a("function");
             });
-            
+
             it("should yield when workTime = 1 and we have work that takes at least 10ms", function(done) {
                 var args = [];
 
@@ -73,7 +78,7 @@
                     done();
                 }, 1, 0);
             });
-            
+
             it("should not yield when workTime = 100000", function(done) {
                 var args = [];
 
@@ -88,4 +93,4 @@
         });
     });
 
-})(typeof window !== "undefined" ? window : undefined);
+}(typeof window !== "undefined" ? window : undefined));

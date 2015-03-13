@@ -1,3 +1,4 @@
+/*eslint-env node,browser,amd,mocha*/
 //
 // Replicates all of the forEachSeries() tests of caolan's async Node.js module
 //
@@ -18,7 +19,7 @@
     // Iterator helpers
     //
     function forEachIterator(args, x, callback) {
-        setTimeout(function(){
+        setTimeout(function() {
             args.push(x);
             callback();
         }, x * 25);
@@ -43,7 +44,7 @@
             it("should work on a simple iterator", function() {
                 var args = [];
 
-                breakup.forEachSeries(SIMPLE_ARRAY, forEachIterator.bind(this, args), function(err){
+                breakup.forEachSeries(SIMPLE_ARRAY, forEachIterator.bind(this, args), function(err) {
                     expect(args).to.be.an("array");
                     expect(args).to.eql(SIMPLE_ARRAY);
                     expect(err).to.eql(null);
@@ -79,4 +80,4 @@
         });
     });
 
-})(typeof window !== "undefined" ? window : undefined);
+}(typeof window !== "undefined" ? window : undefined));

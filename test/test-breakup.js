@@ -1,3 +1,4 @@
+/*eslint-env node,mocha,browser*/
 //
 // Tests yielding functionality of breakup.forEachSeries and breakup.each
 //
@@ -74,29 +75,35 @@
             it("should be a function", function() {
                 expect(breakup.forEachSeries).to.be.a("function");
             });
-            
+
             it("should yield when workTime = 0 and we have work that takes at least 10ms", function(done) {
                 var args = [];
 
-                breakup.forEachSeries(SIMPLE_ARRAY, forEachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
-                    expect(args).to.be.an("array");
-                    expect(args).to.eql(SIMPLE_ARRAY);
-                    expect(err).to.eql(null);
-                    expect(yielded).to.be.ok("should have yielded");
-                    done();
-                }, 0, 0);
+                breakup.forEachSeries(
+                    SIMPLE_ARRAY,
+                    forEachWaitLongTimeIterator.bind(this, args),
+                    function(err, yielded) {
+                        expect(args).to.be.an("array");
+                        expect(args).to.eql(SIMPLE_ARRAY);
+                        expect(err).to.eql(null);
+                        expect(yielded).to.be.ok("should have yielded");
+                        done();
+                    }, 0, 0);
             });
 
             it("should not yield when workTime = 100000", function(done) {
                 var args = [];
 
-                breakup.forEachSeries(SIMPLE_ARRAY, forEachWaitLongTimeIterator.bind(this, args), function(err, yielded) {
-                    expect(args).to.be.an("array");
-                    expect(args).to.eql(SIMPLE_ARRAY);
-                    expect(err).to.eql(null);
-                    expect(yielded).to.not.be.ok("should not have yielded");
-                    done();
-                }, 100000, 0);
+                breakup.forEachSeries(
+                    SIMPLE_ARRAY,
+                    forEachWaitLongTimeIterator.bind(this, args),
+                    function(err, yielded) {
+                        expect(args).to.be.an("array");
+                        expect(args).to.eql(SIMPLE_ARRAY);
+                        expect(err).to.eql(null);
+                        expect(yielded).to.not.be.ok("should not have yielded");
+                        done();
+                    }, 100000, 0);
             });
         });
 
@@ -104,7 +111,7 @@
             it("should be a function", function() {
                 expect(breakup.each).to.be.a("function");
             });
-            
+
             it("should yield when workTime = 1 and we have work that takes at least 10ms", function(done) {
                 var args = [];
 
@@ -131,4 +138,4 @@
         });
     });
 
-})(typeof window !== "undefined" ? window : undefined);
+}(typeof window !== "undefined" ? window : undefined));

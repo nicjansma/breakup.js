@@ -1,7 +1,12 @@
 {
     "rules": {
         // enabled over default
-        "valid-jsdoc": 1,
+        "valid-jsdoc": [1, {
+            "requireReturn": false,
+            "prefer": {
+                "return": "returns"
+            }
+        }],
         "guard-for-in": 2,
         "no-div-regex": 2,
         "no-else-return": 2,
@@ -11,7 +16,6 @@
         "no-void": 2,
         "radix": 2,
         "wrap-iife": 2,
-        "no-undefined": 2,
         "no-mixed-requires": 2,
         "no-new-require": 2,
         "no-path-concat": 2,

@@ -5,12 +5,13 @@
     "use strict";
 
     if (!Function.prototype.bind) {
+        /*eslint no-extend-native:0*/
         Function.prototype.bind = function (thisArg) {
             var args = Array.prototype.slice.call(arguments, 1);
-            var self = this;
+            var that = this;
             return function () {
-                self.apply(thisArg, args.concat(Array.prototype.slice.call(arguments)));
+                that.apply(thisArg, args.concat(Array.prototype.slice.call(arguments)));
             };
         };
     }
-})();
+}());
