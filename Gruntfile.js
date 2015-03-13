@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                 src: [
                     "Gruntfile.js",
                     "lib/**/*.js",
-                    "test/*/*.js"
+                    "test/*.js"
                 ]
             },
             build: {
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
                 src: [
                     "Gruntfile.js",
                     "lib/**/*.js",
-                    "test/*/*.js"
+                    "test/*.js"
                 ]
             }
         },
@@ -69,7 +69,7 @@ module.exports = function(grunt) {
                     "test/vendor/mocha/mocha.js",
                     "test/vendor/expect/index.js",
                     "test/vendor/jquery/dist/jquery.js",
-                    "dist/breakup.min.js",
+                    "lib/breakup.js",
                     "test/utils.js",
                     "test/test-*.js"
                 ]
@@ -100,7 +100,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask("build", ["uglify"]);
 
-    // task groups
+    //
+    // Task Groups
+    //
     grunt.registerTask("default", ["lint", "build"]);
     grunt.registerTask("travis", ["test", "lint"]);
     grunt.registerTask("all", ["clean", "test", "lint:build", "build"]);
