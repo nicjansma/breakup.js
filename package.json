@@ -11,12 +11,7 @@
   "bugs": {
     "url": "http://github.com/nicjansma/breakup.js/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/nicjansma/breakup.js/raw/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "scripts": {
     "test": "grunt travis --verbose"
   },
