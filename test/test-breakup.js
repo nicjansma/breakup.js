@@ -1,4 +1,4 @@
-/*eslint-env node,mocha,browser*/
+/* eslint-env node,mocha,browser */
 //
 // Tests yielding functionality of breakup.forEachSeries and breakup.each
 //

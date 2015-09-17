@@ -1,4 +1,4 @@
-/*eslint-env node,browser,amd,mocha*/
+/* eslint-env node,browser,amd,mocha */
 //
 // Replicates all of the forEachSeries() tests of caolan's async Node.js module
 //
