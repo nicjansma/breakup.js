@@ -2,14 +2,14 @@
 
 v0.1.2
 
-Copyright 2015 Nic Jansma
+Copyright 2017 Nic Jansma
 http://nicj.net
 
 Licensed under the MIT license
 
 ## Introduction
 
-Serially enumerating over a collection (such as using [async.js](https://github.com/caolan/async)'s 
+Serially enumerating over a collection (such as using [async.js](https://github.com/caolan/async)'s
 `async.forEachSeries()` in Node.js or jQuery's `$.each()` in the browser) can lead to performance and
 responsiveness issues if processing or looping through the collection takes
 too long. In some browsers, enumerating over a large number of elements (or
@@ -35,7 +35,7 @@ this will help reduce the chance of a Long Running Script dialog.
 
 breakup.js is primarily meant to be used in a browser environment, as Node.js code is
 already asynchronously driven. You won't see a Long Running Script dialog in Node.js. However,
-you're welcome to use the breakup Node.js module if you want have more control over how much 
+you're welcome to use the breakup Node.js module if you want have more control over how much
 time your enumerations take.  For example, if you have thousands of items to enumerate
 and you want to process them lazily, you could set the threshold to 100ms with a 10000ms
 wait time and specify the `forceYield` parameter, so other work is prioritized.
@@ -58,7 +58,7 @@ __Development:__ [breakup.js](https://github.com/nicjansma/breakup.js/raw/master
 __Production:__ [breakup.min.js](https://github.com/nicjansma/breakup.js/raw/master/dist/breakup.min.js)
     - 829b (minified / gzipped)
 
-breakup.js is also available as the [npm breakup module](https://npmjs.org/package/breakup). You can install using 
+breakup.js is also available as the [npm breakup module](https://npmjs.org/package/breakup). You can install using
 Node Package Manager (npm):
 
     npm install breakup
