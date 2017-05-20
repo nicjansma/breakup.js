@@ -171,8 +171,7 @@ doIteration(function(b) {
 
 ## Documentation
 
-<a name="forEachSeries" />
-### forEachSeries(arr, iterator, callback, workTime, yieldTime, forceYield)
+### forEachSeries(arr, iterator, callback, workTime, yieldTime, forceYield) <a name="forEachSeries" />
 
 This function should be a drop-in replacement for `async.forEachSeries()`.
 
@@ -217,8 +216,7 @@ breakup.forEachSeries(
 You may set the `yieldTime` and `forceYield` parameters in a Node.js environment to force a yield of the
 specified time instead of using Node's `process.nextTick()`.
 
-<a name="each" />
-### each(arr, iterator, callback, workTime, yieldTime, forceYield)
+### each(arr, iterator, callback, workTime, yieldTime, forceYield) <a name="each" />
 
 This function is meant to be a replacement for `jQuery.each()` or `jQuery(selector).each()`.
 
@@ -271,7 +269,9 @@ $([1,2,3]).breakup(
     }
 );
 ```
+
 <a name="eachNote" />
+
 **NOTE**: The difference between `breakup.forEachSeries()` and `breakup.each()`
 is the iterator signature: `forEachSeries()` iterates with `function(item, callback)` and
 requires the callback to indicate work is done.  This matches the `async.forEachSeries()`
@@ -304,9 +304,7 @@ If not specified as the fifth parameter of `forEachSeries()` or `each()`, this v
 
 You may overwrite this value to change the global default.
 
-<a name="noConflict" />
-
-### noConflict()
+### noConflict() <a name="noConflict" />
 
 Changes the value of breakup back to its original value, returning a reference to the
 breakup object.
